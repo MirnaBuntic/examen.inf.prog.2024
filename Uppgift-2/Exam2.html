@@ -80,32 +80,61 @@
 
 
         //TODOS
-        const todos = [
+        //Ändrade från const till let så att jag kan ändra innehållet i listan.
+        let todos = [
             {text: "Les eksamensteksten", status: "Done"},
             {text: "Løs Innføring i programmerings-eksamen", status: "To do"},
             {text: "Lag funksjonalitet for å registrere nye oppgaver", status: "To do"},
             {text: "Lag funksjonalitet for å sette en eksisterende oppgave til utført ved å endre status", status: "To do"}
-        ] 
+        ]
 
-       
-        // Jag gör klart en variabel som skall bygga HTML-kod baserat på infon från todos. Detta är en tom textsträng tills den blir fyllt upp.
-        let todosHTML = ""
+        //Spara HTML-elementet
+        const btn = document.getElementById("savetask");
+        //Kopplar eventListener som reagerar på klick på HTML-elementet.
+        btn.addEventListener("click", addTask);
+
+        //En funktion som kallas i eventListenern.
+        function addTask() {
+           //Hämtar HTML-elementet med id="task". Detta är inputfältet där brukaren fyller ut en ny uppgift på listan.
+           const taskInput = document.getElementById("task");
+           //Hämtar ut värdet som ligger i inputen.
+           const taskText = taskInput.value;
+
+           //Ett if-test som säger att om inputen inte är tom, dvs det är skrivit något, som skall detta läggas till som en ny listpunkt längst ner på listan med hjälp av .push. Det som pushas är todo.text och todo.status. 
+           if (taskText !== "") {
+              todos.push({ text: taskText, status: "To do" });
+              //Tar bort texten i inputfältet efter att man trycker "lagre".
+              taskInput.value = "";
+              
+              //Om de kraven som ställts har uppfyllts, uppdaterar sig todolistan genom att hänvisa till funktionen updateTodoList.
+              updateTodoList();
+            }
+        }
+
+        //Lagt en funktion runt den gamla koden så att listan skall gå att uppdateras med samma regler som jag redan har satt.
+        function updateTodoList() {
         
-        //Här använder jag .map för att gå igenom alla raderna i arrayen i todos. För varje rad sparas värdet i en parameter kallad todo, och kör en kod som bygger en template literal-sträng.
-        //Strängen innehåller en <li>-tag eftersom detta blir ett list-element i våran ul="todolist". För att få todo.text och todo.status brevid varandra använde jag <span>-tags för att separera dessa eftersom de är i samma list-element.
-        //För att visa om tasken är done eller inte så har jag gjort ett if-test som en ternary operator som checkar om värdet av nyckel status är Done ska den skriva ut ordet Done, om inte skriver vi ut To do.
-        todos.map((todo) => {
-            todosHTML += `
-            <li>
-                <span class="task-text">${todo.text}</span>
-                <span class="task-status ${todo.status === 'Done' ? 'task-status-done' : 'task-status-todo'}">${todo.status}</span>
-            </li>
-        `
-        })
+           // Jag gör klart en variabel som skall bygga HTML-kod baserat på infon från todos. Detta är en tom textsträng tills den blir fyllt upp.
+            let todosHTML = ""
+        
+           //Här använder jag .map för att gå igenom alla raderna i arrayen i todos. För varje rad sparas värdet i en parameter kallad todo, och kör en kod som bygger en template literal-sträng.
+           //Strängen innehåller en <li>-tag eftersom detta blir ett list-element i våran ul="todolist". För att få todo.text och todo.status brevid varandra använde jag <span>-tags för att separera dessa eftersom de är i samma list-element.
+           //För att visa om tasken är done eller inte så har jag gjort ett if-test som en ternary operator som checkar om värdet av nyckel status är Done ska den skriva ut ordet Done, om inte skriver vi ut To do.
+           todos.map((todo) => {
+               todosHTML += `
+               <li>
+                   <span class="task-text">${todo.text}</span>
+                   <span class="task-status ${todo.status === 'Done' ? 'task-status-done' : 'task-status-todo'}">${todo.status}</span>
+               </li>
+             `
+            })
 
-        //Skriver ut innehållet till HTML-sträningen som i todosHTML inne i elementet med id "todolist".
-        document.getElementById("todolist").innerHTML = todosHTML;
+            //Skriver ut innehållet till HTML-sträningen som i todosHTML inne i elementet med id "todolist".
+            document.getElementById("todolist").innerHTML = todosHTML;
+        }
 
+        //Anropar updateTodoList med en gång sidan laddas. Har man inte denna så ser man inte tasksen förens man lägger till en ny.
+        updateTodoList();
 
         //CLOCK
         
