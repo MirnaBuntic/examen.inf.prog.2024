@@ -143,20 +143,26 @@
         //CLOCK
         //3.hjälp-dokumentet
         function startTime() {
+          //En variabel som visar aktuell tid med objektet Date.
           const today = new Date();
+          //Hämtar aktuella timmar, minuter och sekunder från Date.
           let h = today.getHours();
           let m = today.getMinutes();
           let s = today.getSeconds();
+          //Hänvisar till funktionen checkTime som gör att det läggs till en nolla innan siffror lägre än 10.
           m = checkTime(m);
           s = checkTime(s);
+          //Clock ska visas i realtid.
           //Bytte ut id="txt" till id="clock" så att det ska matcha mitt befintliga id.
           document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+          //Gör att den uppdaterar sig varje sekund.
           setTimeout(startTime, 1000);
         }
 
         function checkTime(i) {
           if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-          return i;
+          //retunerar det uppdaterade värdet.
+          return i; 
         }
     </script>
 </body>
