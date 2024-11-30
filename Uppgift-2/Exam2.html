@@ -6,13 +6,15 @@
     <title>Eksamen, oppgave 2</title>
     <link href="exam2.css" rel="stylesheet" media="all">
 </head>
-<body class="lato-regular">
+<!--Ett attribut som gör att klockan startar med en gång man går in på sidan.-->
+<body class="lato-regular" onload="startTime()">
     <main>
         <section id="contacts">
             <h2>Kontakter</h2>
             <div id="contactlist"></div>
         </section>
-        <aside id="clock">13:37</aside>
+        <!--Tog bort den statiska klockan och behöll endast id.-->
+        <aside id="clock"></aside>
         <section id="books">
             <h2>Regnskap</h2>
             <p>Innkommende egenkapital: Kr. <span id="incomingequity"></span></p>
@@ -120,6 +122,7 @@
            //Här använder jag .map för att gå igenom alla raderna i arrayen i todos. För varje rad sparas värdet i en parameter kallad todo, och kör en kod som bygger en template literal-sträng.
            //Strängen innehåller en <li>-tag eftersom detta blir ett list-element i våran ul="todolist". För att få todo.text och todo.status brevid varandra använde jag <span>-tags för att separera dessa eftersom de är i samma list-element.
            //För att visa om tasken är done eller inte så har jag gjort ett if-test som en ternary operator som checkar om värdet av nyckel status är Done ska den skriva ut ordet Done, om inte skriver vi ut To do.
+           //1.hjälp-dokumentet
            todos.map((todo) => {
                todosHTML += `
                <li>
@@ -134,10 +137,27 @@
         }
 
         //Anropar updateTodoList med en gång sidan laddas. Har man inte denna så ser man inte tasksen förens man lägger till en ny.
+        //2.hjälp-dokumentet
         updateTodoList();
 
         //CLOCK
-        
+        //3.hjälp-dokumentet
+        function startTime() {
+          const today = new Date();
+          let h = today.getHours();
+          let m = today.getMinutes();
+          let s = today.getSeconds();
+          m = checkTime(m);
+          s = checkTime(s);
+          //Bytte ut id="txt" till id="clock" så att det ska matcha mitt befintliga id.
+          document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+          setTimeout(startTime, 1000);
+        }
+
+        function checkTime(i) {
+          if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+          return i;
+        }
     </script>
 </body>
 </html>
