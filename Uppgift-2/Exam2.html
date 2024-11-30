@@ -54,10 +54,11 @@
 
         let contactlist = ""
 
+        //Lagt till mailto-protokollet som gör eposten klickbar via en a-tag som gör att det blir en länk. Länken kommer att visa eposten som tillhör respektive kontakt i variabeln contacts.
         contacts.map((contact, index) => {
             contactlist += `<article>
                 <p><strong>${contact.lastname}, ${contact.firstname}</strong><br />
-                    Kontor: ${contact.office} | E-post: ${contact.mail}</p>
+                    Kontor: ${contact.office} | E-post: <a href="mailto:${contact.mail}">${contact.mail}</a></p> 
             </article>`
         })
 
@@ -102,7 +103,7 @@
         `
         })
 
-        //Skriver ut innehållet till HTML-sträningen som finns i todosHTML inne i elementet med id "todolist".
+        //Skriver ut innehållet till HTML-sträningen som i todosHTML inne i elementet med id "todolist".
         document.getElementById("todolist").innerHTML = todosHTML;
 
 
