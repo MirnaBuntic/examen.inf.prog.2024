@@ -54,9 +54,14 @@
             {lastname: "Jansson", firstname: "Sigried", office: "B1", mail: "s.jansson@company.com"}
         ]
 
-        let contactlist = ""
+        //Använder metoden .sort för att sortera arrayen contacts. A och b ska jämföras för att komma fram till rätt alfabetisk ordning, en så kallad comparison function. Jag specificerar sedan att det är objektet lastname som ska jämföras med varandra.
+        //Jag använder localeCompare för att vara säker på att den tar hänsyn till sortering av strings på alla språk.
+        //3.hjälp-dokument
+        contacts.sort((a, b) =>a.lastname.localeCompare(b.lastname));
 
-        //Lagt till mailto-protokollet som gör eposten klickbar via en a-tag som gör att det blir en länk. Länken kommer att visa eposten som tillhör respektive kontakt i variabeln contacts.
+        let contactlist = ""
+        
+        //Lagt till mailto-protokollet som gör e-posten klickbar via en a-tag som gör att det blir en länk. Länken kommer att visa eposten som tillhör respektive kontakt i variabeln contacts.
         contacts.map((contact, index) => {
             contactlist += `<article>
                 <p><strong>${contact.lastname}, ${contact.firstname}</strong><br />
@@ -75,6 +80,24 @@
             {text: "Kontorrekvisita", date: "10.11.24", amount: -644},
             {text: "Nettbutikksalg, uke 45", date: "13.11.24", amount: 2988}
         ]
+
+        //Jag gör klart en variabel som skall bygga HTML-kod baserat på infon från books. Detta är en tom textsträng tills den blir fyllt upp.
+        let booksHTML="";
+
+        //Här använder jag .map för att gå igenom alla raderna i arrayen i books. För varje rad sparas värdet i en parameter kallad book, och kör en kod som bygger en template literal-sträng.
+        //Strängen innehåller en <div>-tag som innehåller <span>-tags för varje kategori.
+        books.map((book) => {
+            booksHTML += `
+            <div class="bookline">
+                <span class="booktext">${book.text}</span>
+                <span class="bookdate">${book.date}</span>
+                <span class="bookamount">${book.amount}</span>
+            </div>
+            `
+        })
+
+        //Skriver ut innehållet till HTML-strängen som ligger i booksHTML inne i elementet med id "booklines".
+        document.getElementById("booklines").innerHTML = booksHTML;
 
         let equity = 23782; //Penger på konto ved inngangen til november
         document.getElementById("incomingequity").innerHTML = equity
@@ -102,11 +125,13 @@
            //Hämtar ut värdet som ligger i inputen.
            const taskText = taskInput.value;
 
-           //Ett if-test som säger att om inputen inte är tom, dvs det är skrivit något, som skall detta läggas till som en ny listpunkt längst ner på listan med hjälp av .push. Det som pushas är todo.text och todo.status. 
-           if (taskText !== "") {
+           //Ett if-test som säger att om inputen är tom skall en alert poppa upp som säger att man måste fylla ut inputen. Är inputen fyllt ut skall detta läggas till som en ny listpunkt längst ner på listan med hjälp av .push. Det som pushas är todo.text och todo.status. 
+           if (taskText === "") {
+
+             alert("Vennligst fyll ut oppgavetekst.");
+
+            } else{
               todos.push({ text: taskText, status: "To do" });
-              //Tar bort texten i inputfältet efter att man trycker "lagre".
-              taskInput.value = "";
               
               //Om de kraven som ställts har uppfyllts, uppdaterar sig todolistan genom att hänvisa till funktionen updateTodoList.
               updateTodoList();
@@ -117,12 +142,11 @@
         function updateTodoList() {
         
            // Jag gör klart en variabel som skall bygga HTML-kod baserat på infon från todos. Detta är en tom textsträng tills den blir fyllt upp.
-            let todosHTML = ""
+            let todosHTML = "";
         
            //Här använder jag .map för att gå igenom alla raderna i arrayen i todos. För varje rad sparas värdet i en parameter kallad todo, och kör en kod som bygger en template literal-sträng.
            //Strängen innehåller en <li>-tag eftersom detta blir ett list-element i våran ul="todolist". För att få todo.text och todo.status brevid varandra använde jag <span>-tags för att separera dessa eftersom de är i samma list-element.
            //För att visa om tasken är done eller inte så har jag gjort ett if-test som en ternary operator som checkar om värdet av nyckel status är Done ska den skriva ut ordet Done, om inte skriver vi ut To do.
-           //1.hjälp-dokumentet
            todos.map((todo) => {
                todosHTML += `
                <li>
@@ -132,16 +156,16 @@
              `
             })
 
-            //Skriver ut innehållet till HTML-sträningen som i todosHTML inne i elementet med id "todolist".
+            //Skriver ut innehållet till HTML-strängen som ligger i todosHTML inne i elementet med id "todolist".
             document.getElementById("todolist").innerHTML = todosHTML;
         }
 
         //Anropar updateTodoList med en gång sidan laddas. Har man inte denna så ser man inte tasksen förens man lägger till en ny.
-        //2.hjälp-dokumentet
+        //1.hjälp-dokumentet
         updateTodoList();
 
         //CLOCK
-        //3.hjälp-dokumentet
+        //2.hjälp-dokumentet
         function startTime() {
           //En variabel som visar aktuell tid med objektet Date.
           const today = new Date();
