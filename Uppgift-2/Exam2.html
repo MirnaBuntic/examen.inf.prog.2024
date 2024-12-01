@@ -29,8 +29,9 @@
                     <!-- Skal genereres fra datakilde i <script>. Oppføringen under er for å vise HTML-strukturen -->
                 </div>
             </section>
-            <p>Balanse november: Kr. <span id="balance">-</span></p>
-            <p>Egenkapital: Kr. <span id="equity">-</span></p>
+            <!--Tog bort "-" från span-tagsen så att mitt nya värde visas på hemsidan-->
+            <p>Balanse november: Kr. <span id="balance"></span></p>
+            <p>Egenkapital: Kr. <span id="equity"></span></p>
         </section>
         <section id="todoform">
             <h2>Ny oppgave</h2>
@@ -56,7 +57,7 @@
 
         //Använder metoden .sort för att sortera arrayen contacts. A och b ska jämföras för att komma fram till rätt alfabetisk ordning, en så kallad comparison function. Jag specificerar sedan att det är objektet lastname som ska jämföras med varandra.
         //Jag använder localeCompare för att vara säker på att den tar hänsyn till sortering av strings på alla språk.
-        //3.hjälp-dokument
+        //2.hjälp-dokument
         contacts.sort((a, b) =>a.lastname.localeCompare(b.lastname));
 
         let contactlist = ""
@@ -103,6 +104,20 @@
         document.getElementById("incomingequity").innerHTML = equity
         let balance = 0;    //Startbalanse for utregning av utgifter og inntekter i november
 
+        //Jag startar en teller som börjar på 0 och fortsätter genom hela books.length, som som alltså har värdet 5 i detta fall. Sen använder jag en så kallad inkrementerings-operator "teller ++", som lägger + 1 i variabelen för varje runda i loopen.
+        //Sen tar jag variabeln balance som har värdet 0 plussar på min teller som ska gå i genom arrayen books. Jag hänvisar sen till amount för att specificera vilket objekt jag vill att tellern ska räkna ut.
+        for(let teller = 0; teller < books.length; teller++) {
+            balance += books[teller].amount;
+        }
+
+        //Skriver ut värdet som blev i variabeln balance i JS till id:et i HTML som har samma namn.
+        document.getElementById("balance").innerHTML = balance;
+
+        //Gör en ny variabel som samlar värdet från equity som är 23782 + värdet från balance som är 3284.
+        let newEquity = equity + balance;
+
+        //Skriver ut det nya värdet av equity som finns i variabeln newEquity till id:et "equity" i HTML.
+        document.getElementById("equity").innerHTML = newEquity;
 
         //TODOS
         //Ändrade från const till let så att jag kan ändra innehållet i listan.
@@ -133,6 +148,9 @@
             } else{
               todos.push({ text: taskText, status: "To do" });
               
+             //Tar bort texten från input-fältet efter att man lagrat en task.
+             taskInput.value ="";
+
               //Om de kraven som ställts har uppfyllts, uppdaterar sig todolistan genom att hänvisa till funktionen updateTodoList.
               updateTodoList();
             }
@@ -160,12 +178,11 @@
             document.getElementById("todolist").innerHTML = todosHTML;
         }
 
-        //Anropar updateTodoList med en gång sidan laddas. Har man inte denna så ser man inte tasksen förens man lägger till en ny.
-        //1.hjälp-dokumentet
+        //Anropar funktionen updateTodoList med en gång sidan laddas.
         updateTodoList();
 
         //CLOCK
-        //2.hjälp-dokumentet
+        //1.hjälp-dokumentet
         function startTime() {
           //En variabel som visar aktuell tid med objektet Date.
           const today = new Date();
