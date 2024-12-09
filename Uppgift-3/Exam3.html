@@ -52,6 +52,53 @@
 
         //Initial running of drawing canvas
         renderCanvas()
+
+        //En array som samlar färgerna.
+        let colors = [];
+
+        //En funktion för att generera en random färg
+        function randomColor() {
+
+          //En sträng som innehåller alla möjliga tecken i en hex-färg, dvs 0-9 och a-f
+          const string = "0123456789ABCDEF";
+          //Satte color till # eftersom hex typiskt startar med detta efterföljt av 6 tecken.
+          let color = "#";
+
+          //En for loop som kör 6 gånger eftersom det är 6 tecken i en hex färg.
+          for (let teller = 0; teller < 6; teller++) {
+            //Math.random retunerar ett tal mellan 0 och 1. Eftersom jag behöver heltal och värden större än mellan 0-1 använder jag Math.floor som avrundar ner till närmaste heltal.
+            //Jag gångrar därför Math.random med 16 för att Math.floor ska avrunda det ner till ett värde mellan 0-15.
+             color += string[Math.floor(Math.random() * 16)];
+          }
+          //När loopen har körts 6 gånger retuneras den färdiga färgen och visas när funktionen anropas.
+          return color;
+        }
+
+        //Sparar HTML-elementet
+        const btn = document.getElementById("addColor")
+
+        //Kopplar en eventlistener som lyssnar efter klick på HTML-elementet
+        btn.addEventListener("click", newColor)
+
+        //Funktionen som kallas i eventlistenern
+        function newColor() {
+            //Gör ett if-test för att se om det är 10 eller fler färger i arrayen.
+            if (colors.length >= 10) {
+                //Om det är 10 eller fler blir knappen disabled dvs inte längre tryckbar.
+                btn.disabled = true;
+
+            } else {
+                //Här genereras den nya färgen genom loopen randomColor.
+                const generatedColor = randomColor();
+                //Jag pushar den senaste färgen till min array.
+                colors.push(generatedColor);
+
+                //Loggar alla färger i arrayen när knappen "Legg til en farge" trycks på.
+                console.log(colors);
+            }
+        }
+
+
     </script>
 </body>
 </html>
