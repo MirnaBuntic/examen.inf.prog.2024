@@ -64,17 +64,17 @@
         }
 
         //Sparar HTML-elementet
-        const btn = document.getElementById("addColor")
+        const addBtn = document.getElementById("addColor")
 
         //Kopplar en eventlistener som lyssnar efter klick på HTML-elementet
-        btn.addEventListener("click", newColor)
+        addBtn.addEventListener("click", newColor)
 
         //Funktionen som kallas i eventlistenern
         function newColor() {
             //Gör ett if-test för att se om det är 10 eller fler färger i arrayen.
             if (colors.length >= 10) {
                 //Om det är 10 eller fler blir knappen disabled dvs inte längre tryckbar.
-                btn.disabled = true;
+                addBtn.disabled = true;
 
             //Om kraven uppfylls ska funktionen generera en ny random färg.
             } else {
@@ -94,6 +94,8 @@
 
             // Töm canvasen innan ny ritning.
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+           
 
             // Bredden på varje färgruta får jag genom att denna canvasen på 10 eftersom det ska få plats max 10 rutor.
             const squareWidth = canvas.width / 10;
@@ -161,7 +163,7 @@
                 ctx.fillText(index + 1, (index + 1) * squareWidth - 19, canvas.height - 10); 
 
             }          
-
+            
             //requestAnimationFrame ger oss möjligheten att anropa en funktion som manipulerar vad som ska ritas innan webbläsaren ritar nästa bildruta.
             requestAnimationFrame(renderCanvas)
         }
@@ -169,7 +171,23 @@
         //Initial running of drawing canvas
         renderCanvas()
 
+        //Sparar HTML-elementet
+        const resetBtn = document.getElementById("emptyArray");
 
+        //Gör att när man klickar på knappen "Tillbakestill fargene" så körs funktionen resetColors.
+        resetBtn.addEventListener("click", resetColors);
+
+        function resetColors() {
+            //Tömmer arrayen med färger.
+            colors = [];
+            console.log('Colors array after reset:', colors); // Lägg till logg för felsökning
+
+            //Gör att knappen "Legg til en farge" fungerar igen.
+            document.getElementById("addColor").disabled = false;
+    
+            // Rensar canvasen.
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
 
 
     </script>
