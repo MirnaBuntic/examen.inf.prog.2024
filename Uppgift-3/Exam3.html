@@ -66,11 +66,11 @@
         //Sparar HTML-elementet
         const addBtn = document.getElementById("addColor")
 
-        //Kopplar en eventlistener som lyssnar efter klick på HTML-elementet
-        addBtn.addEventListener("click", newColor)
+        //Kopplar en eventlistener som lyssnar efter klick på HTML-elementet och kör funktionen addNewColor
+        addBtn.addEventListener("click", addNewColor)
 
         //Funktionen som kallas i eventlistenern
-        function newColor() {
+        function addNewColor() {
             //Gör ett if-test för att se om det är 10 eller fler färger i arrayen.
             if (colors.length >= 10) {
                 //Om det är 10 eller fler blir knappen disabled dvs inte längre tryckbar.
@@ -91,6 +91,7 @@
         //Sparar HTML-elementet.
         const tenColorsBtn = document.getElementById("generateAll");
 
+        //Kopplar en eventlistener som lyssnar efter klick på HTML-elementet och kör funktionen tenNewColors
         tenColorsBtn.addEventListener("click", tenNewColors);
 
         function tenNewColors() {
@@ -99,12 +100,39 @@
 
             //Denna loopen genererar 10 nya random färger om vilkoret att det index är mindre än 10.
             for (let index = 0; index < 10; index++) {
+                //Pushar funktionen
                 colors.push(randomColor());
             }
 
             //Gör "Legg til en farge"- knappen inte längre tryckbar.
             addBtn.disabled = true;
         }
+
+        //Sparar HTML-elementen
+        const saveColorBtn = document.getElementById("saveNewColor");
+        const colorSquare = document.getElementById("colorSquareIndex");
+        const newColorInput = document.getElementById("newColor");
+
+        //Lägger till en eventlistener so mlyssnar på knappen "Lagre ny farge" och kör funktionen saveColor.
+        saveColorBtn.addEventListener("click", saveColor);
+
+        function saveColor() {
+
+            const indexNumber = Number(colorSquare.value);
+            const colorValue = "#" + newColorInput.value;
+
+             
+            if (selectedIndex >= 0 && selectedIndex < 10 && colors[selectedIndex] !== undefined) {
+
+               colors[indexNumber] = newColorValue; 
+
+            } else {
+
+               return;
+            }
+        }
+
+
 
         //requestAnimationFrame
         const requestAnimationFrame = window.requestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
