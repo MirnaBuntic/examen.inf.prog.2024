@@ -42,36 +42,25 @@
 
         /* --- YOUR FUNCTIONALITY AND CODE GOES HERE --- */
         
-
-        //requestAnimationFrame
-        const requestAnimationFrame = window.requestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
-        function renderCanvas() {
-            
-            requestAnimationFrame(renderCanvas)
-        }
-
-        //Initial running of drawing canvas
-        renderCanvas()
-
         //En array som samlar färgerna.
         let colors = [];
 
         //En funktion för att generera en random färg
         function randomColor() {
 
-          //En sträng som innehåller alla möjliga tecken i en hex-färg, dvs 0-9 och a-f
-          const string = "0123456789ABCDEF";
-          //Satte color till # eftersom hex typiskt startar med detta efterföljt av 6 tecken.
-          let color = "#";
+            //En sträng som innehåller alla möjliga tecken i en hex-färg, dvs 0-9 och a-f
+            const string = "0123456789ABCDEF";
+            //Satte color till # eftersom hex typiskt startar med detta efterföljt av 6 tecken.
+            let color = "#";
 
-          //En for loop som kör 6 gånger eftersom det är 6 tecken i en hex färg.
-          for (let teller = 0; teller < 6; teller++) {
-            //Math.random retunerar ett tal mellan 0 och 1. Eftersom jag behöver heltal och värden större än mellan 0-1 använder jag Math.floor som avrundar ner till närmaste heltal.
-            //Jag gångrar därför Math.random med 16 för att Math.floor ska avrunda det ner till ett värde mellan 0-15.
-             color += string[Math.floor(Math.random() * 16)];
-          }
-          //När loopen har körts 6 gånger retuneras den färdiga färgen och visas när funktionen anropas.
-          return color;
+            //En for loop som kör 6 gånger eftersom det är 6 tecken i en hex färg.
+            for (let teller = 0; teller < 6; teller++) {
+                //Math.random retunerar ett tal mellan 0 och 1. Eftersom jag behöver heltal och värden större än mellan 0-1 använder jag Math.floor som avrundar ner till närmaste heltal.
+                //Jag gångrar därför Math.random med 16 för att Math.floor ska avrunda det ner till ett värde mellan 0-15.
+                color += string[Math.floor(Math.random() * 16)];
+            }
+            //När loopen har körts 6 gånger retuneras den färdiga färgen och visas när funktionen anropas.
+            return color;
         }
 
         //Sparar HTML-elementet
@@ -87,6 +76,7 @@
                 //Om det är 10 eller fler blir knappen disabled dvs inte längre tryckbar.
                 btn.disabled = true;
 
+            //Om kraven uppfylls ska funktionen generera en ny random färg.
             } else {
                 //Här genereras den nya färgen genom loopen randomColor.
                 const generatedColor = randomColor();
@@ -97,6 +87,89 @@
                 console.log(colors);
             }
         }
+
+        //requestAnimationFrame
+        const requestAnimationFrame = window.requestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
+        function renderCanvas() {
+
+            // Töm canvasen innan ny ritning.
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Bredden på varje färgruta får jag genom att denna canvasen på 10 eftersom det ska få plats max 10 rutor.
+            const squareWidth = canvas.width / 10;
+
+            // Loopa igenom "colors"-arrayen för att rita rutor och text.
+            for (let index = 0; index < colors.length; index++) {
+
+                //Färgrutan
+                //Startar en path eller "stig" för att definera vart min form startar.
+                ctx.beginPath();
+                //Gör en geometrisk väg som formar kvadraterna. .rect står för (x, y, width, height). squareWidth är en variabel som representerar kvadratens bredd.
+                //Jag tar index * squareWidth för att x ska flytta sig baserat på värdet av index och bredden på kvadraterna. Detta gör jag för att kvadraterna inte ska överlappa varandra, utan istället lägga sig brevid varandra.
+                //Exempelvis om index är 0 så kommer den första rektangeln starta på position noll. Skulle index vara 1, kommer nästa rektangel starta efter squareWidth som alltså är kvadratens bredd, vilket betyder att kvadraten alltså kommer att lägga sig sida om sida med den andra kvadraten.
+                //0 sätter jag eftersom jag vill ha den vertikala nollpunkten, dvs att kvadraten börjar från toppen av canvasen.
+                //canvas.height är kvadratens höjd som ska va samma som canvas höjden.
+                ctx.rect(index * squareWidth, 0, squareWidth, canvas.height);
+                //Lägger på färgen som genereras från colors.
+                ctx.fillStyle = colors[index];
+                //Visar färgen i kvadraten.
+                ctx.fill();
+                //Stänger stigen för att definera vart formen slutar.
+                ctx.closePath();
+
+                //"Bakgrundsrektangeln" till färgnamnet.
+                //Startar en path eller "stig" för att definera vart min form startar.
+                ctx.beginPath();
+                //Här gör jag till en början samma som den över, men jag sätter en fast bredd på 80 pixlar och en fast höjd på 28 pixlar.
+                ctx.rect(index * squareWidth, 0, 80, 28);
+                //Lägger till vit färg.
+                ctx.fillStyle = "#fff"; 
+                //Visar färgen i rektangeln.
+                ctx.fill();
+                //Stänger stigen för att definera vart formen slutar.
+                ctx.closePath();
+
+                //Färgnamnet på den vita rektangeln.
+                //Textstorlek och font.
+                ctx.font = "14px Arial";
+                //Texten är svart.
+                ctx.fillStyle = "#000"; 
+                //.fillText står för (text, x, y). colors[index tar fram hex värdet som ska visas i rutan].
+                //Jag tar återigen index * squareWidth för att göra samma förskjutning av rektanglarna. Sen tar jag +10 pixlar för att texten ska börja lite längre in.
+                //Jag tar 20 pixlar på y för att texten ska börja lite längre ner från kanten.
+                ctx.fillText(colors[index], index * squareWidth + 10, 20); 
+
+                //Startar en path eller "stig" för att definera vart min form startar.
+                ctx.beginPath();
+                //Jag börjar på samma sätt men sen plussar jag på squareWidth och tar minus 30 pixlar för att justera ytterliggare hur långt till höger rutan ska vara.
+                //Sen fortsätter jag att justera höjd och bredd med 30 pixlar.
+                ctx.rect(index * squareWidth + squareWidth - 30, canvas.height - 30, 30, 30); 
+                //Lägger till vit färg.
+                ctx.fillStyle = "#fff";
+                //Visar färgen i rektangeln.
+                ctx.fill();
+                //Stänger stigen för att definera vart formen slutar.
+                ctx.closePath();
+
+                //Nummeret på rutan
+                //Textstorlek och font.
+                ctx.font = "18px Arial";
+                //Texten ska ha samma färg som själva kvadraten.
+                ctx.fillStyle = colors[index]; 
+                //Jag börjar med att justera texten genom att skriva index + 1. Detta eftersom indexet börjar på 0, men jag vill ju skriva ut det som om att det börjar på 1.
+                //Sen gångrar jag med squareWidth för att på samma sätt som innan förskjuta texten för varje kvadrat som blir. Minus 19 pixlar tar jag för att finjustera textens placering. Samma med canvas -10 pixlar.
+                ctx.fillText(index + 1, (index + 1) * squareWidth - 19, canvas.height - 10); 
+
+            }          
+
+            //requestAnimationFrame ger oss möjligheten att anropa en funktion som manipulerar vad som ska ritas innan webbläsaren ritar nästa bildruta.
+            requestAnimationFrame(renderCanvas)
+        }
+
+        //Initial running of drawing canvas
+        renderCanvas()
+
+
 
 
     </script>
