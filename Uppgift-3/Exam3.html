@@ -88,6 +88,24 @@
             }
         }
 
+        //Sparar HTML-elementet.
+        const tenColorsBtn = document.getElementById("generateAll");
+
+        tenColorsBtn.addEventListener("click", tenNewColors);
+
+        function tenNewColors() {
+            //Töm arrayen.
+            colors = [];
+
+            //Denna loopen genererar 10 nya random färger om vilkoret att det index är mindre än 10.
+            for (let index = 0; index < 10; index++) {
+                colors.push(randomColor());
+            }
+
+            //Gör "Legg til en farge"- knappen inte längre tryckbar.
+            addBtn.disabled = true;
+        }
+
         //requestAnimationFrame
         const requestAnimationFrame = window.requestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame
         function renderCanvas() {
