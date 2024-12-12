@@ -119,19 +119,60 @@
         function saveColor() {
 
             const indexNumber = Number(colorSquare.value);
+
             const colorValue = "#" + newColorInput.value;
 
-             
-            if (indexNumber >= 0 && indexNumber < 10 && colors[indexNumber] !== undefined) {
+            if (colors.length === 0) {
 
-               colors[indexNumber] = colorValue; 
+                alert("Det er ingen firkanter som kan bytte farge enda.");
 
-            } else {
-
-               return;
+                return;
             }
-        }
 
+            let firstColor = -1;
+            let lastColor = -1;
+
+            colors.forEach((color, index) => {
+            
+                if (firstColor === -1 && color !== undefined) {
+                    firstColor = index; 
+                }
+                if (color !== undefined) {
+                    lastColor = index;
+                }
+            });
+
+            if (colors[indexNumber] === undefined) {
+
+               if (firstColor === -1) {
+
+                  alert("Det er ingen firkanter som kan bytte farge enda.");
+                
+                } else {
+                  
+                    alert(`Du har valgt firkant ${indexNumber + 1}. Denne har ikke en farge enda, og kan derfor ikke byttes. 
+                    Du kan endre farge på firkant ${firstColor + 1} til ${lastColor + 1}.`);
+                }
+                return;
+            }
+
+            if (!/^#[0-9A-Fa-f]{6}$/.test(colorValue)) {
+                
+                alert(`Du har skrevet ${colorValue}. Dette er ikke en gyldig fargekode.`);
+                return;
+            }
+
+            if (colorValue === "#") {
+              
+                alert("Du har ikke skrevet noen fargekode enda.");
+            
+                return;
+            }
+
+     
+            colors[indexNumber] = colorValue;
+
+        }
 
 
         //requestAnimationFrame
