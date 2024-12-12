@@ -113,55 +113,66 @@
         const colorSquare = document.getElementById("colorSquareIndex");
         const newColorInput = document.getElementById("newColor");
 
-        //Lägger till en eventlistener so mlyssnar på knappen "Lagre ny farge" och kör funktionen saveColor.
+        //Lägger till en eventlistener som lyssnar på knappen "Lagre ny farge" och kör funktionen saveColor.
         saveColorBtn.addEventListener("click", saveColor);
 
         function saveColor() {
 
+            //Hämtar valgt nummer från drop down menyn.
             const indexNumber = Number(colorSquare.value);
 
+            //Lägger till # innan hexkoden som användaren skriver i input fältet för att få en giltig hexkod.
             const colorValue = "#" + newColorInput.value;
 
+            //Ett if-test för att se om det finns några rutor att ändra på.
             if (colors.length === 0) {
-
+                //Finns det inga rutor visas detta meddelande.
                 alert("Det er ingen firkanter som kan bytte farge enda.");
 
                 return;
             }
 
+            //Variabler för att hålla värdet på första och sista möjliga ruta. Det är satt till -1 för att matkera att det inte är någon färg från början.
             let firstColor = -1;
             let lastColor = -1;
 
+            //En loop genom colors arrayen för att hitta rutans färg och värde.
             colors.forEach((color, index) => {
             
+                //Ett if-test för att kontrollera om firstColor är -1 och om den aktuella rutan har en färg. När den första färgade rutan hittas så sparas värdet i firstColor. 
                 if (firstColor === -1 && color !== undefined) {
                     firstColor = index; 
                 }
+                //Ett if-test som hittar sista rutan med färg. Efter att loopen har körts och en rutan har identifierats så sparas värdet i lastColor.
                 if (color !== undefined) {
                     lastColor = index;
                 }
             });
 
+            //Ett if-test för att se om den valde rutan inte har en färg.
             if (colors[indexNumber] === undefined) {
 
+                //If-test för att se om det inte finns någon ruta. Finns det inte så ska detta meddelande komma upp.
                if (firstColor === -1) {
-
                   alert("Det er ingen firkanter som kan bytte farge enda.");
                 
                 } else {
-                  
+                    //Finns det en eller flera rutor på canvasen, men användaren har valt ett nummer som inte finns, så kommer detta meddelande att visas.
                     alert(`Du har valgt firkant ${indexNumber + 1}. Denne har ikke en farge enda, og kan derfor ikke byttes. 
                     Du kan endre farge på firkant ${firstColor + 1} til ${lastColor + 1}.`);
                 }
                 return;
             }
 
+            //2.b. Hjälp-dokumentet
+            //If-test för att se om det finns en giltig hex-kod.
             if (!/^#[0-9A-Fa-f]{6}$/.test(colorValue)) {
-                
+                //Om koden inte är giltig ska detta meddelande visas.
                 alert(`Du har skrevet ${colorValue}. Dette er ikke en gyldig fargekode.`);
                 return;
             }
-
+            
+            //Om input-fältet är tomt, men lagre-knappen har trycks ändå, ska detta meddelande visas för användaren.
             if (colorValue === "#") {
               
                 alert("Du har ikke skrevet noen fargekode enda.");
@@ -169,7 +180,7 @@
                 return;
             }
 
-     
+            //Uppdaterar värdet, alltså färgen, i arrayen colors på en specifik plats (rutnr). Rutan uppdateras med värdet som användaren har skrivit i input-fältet.
             colors[indexNumber] = colorValue;
 
         }
