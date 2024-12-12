@@ -122,9 +122,9 @@
             const colorValue = "#" + newColorInput.value;
 
              
-            if (selectedIndex >= 0 && selectedIndex < 10 && colors[selectedIndex] !== undefined) {
+            if (indexNumber >= 0 && indexNumber < 10 && colors[indexNumber] !== undefined) {
 
-               colors[indexNumber] = newColorValue; 
+               colors[indexNumber] = colorValue; 
 
             } else {
 
@@ -154,7 +154,7 @@
                 ctx.beginPath();
                 //Gör en geometrisk väg som formar kvadraterna. .rect står för (x, y, width, height). squareWidth är en variabel som representerar kvadratens bredd.
                 //Jag tar index * squareWidth för att x ska flytta sig baserat på värdet av index och bredden på kvadraterna. Detta gör jag för att kvadraterna inte ska överlappa varandra, utan istället lägga sig brevid varandra.
-                //Exempelvis om index är 0 så kommer den första rektangeln starta på position noll. Skulle index vara 1, kommer nästa rektangel starta efter squareWidth som alltså är kvadratens bredd, vilket betyder att kvadraten alltså kommer att lägga sig sida om sida med den andra kvadraten.
+                //Exempelvis om index är 0 så kommer den första rektangeln starta på position noll. Skulle index vara 1, kommer nästa rektangel starta efter squareWidth som alltså är kvadratens bredd, vilket betyder att kvadraten alltså kommer att lägga sig sida om sida med den första kvadraten.
                 //0 sätter jag eftersom jag vill ha den vertikala nollpunkten, dvs att kvadraten börjar från toppen av canvasen.
                 //canvas.height är kvadratens höjd som ska va samma som canvas höjden.
                 ctx.rect(index * squareWidth, 0, squareWidth, canvas.height);
@@ -182,7 +182,7 @@
                 ctx.font = "14px Arial";
                 //Texten är svart.
                 ctx.fillStyle = "#000"; 
-                //.fillText står för (text, x, y). colors[index tar fram hex värdet som ska visas i rutan].
+                //.fillText står för (text, x, y). colors[index] tar fram hex värdet som ska visas i rutan.
                 //Jag tar återigen index * squareWidth för att göra samma förskjutning av rektanglarna. Sen tar jag +10 pixlar för att texten ska börja lite längre in.
                 //Jag tar 20 pixlar på y för att texten ska börja lite längre ner från kanten.
                 ctx.fillText(colors[index], index * squareWidth + 10, 20); 
@@ -226,12 +226,13 @@
         function resetColors() {
             //Tömmer arrayen med färger.
             colors = [];
-            console.log('Colors array after reset:', colors); // Lägg till logg för felsökning
+            //Kontroll log för felsökning.
+            console.log('Colors array after reset:', colors); 
 
             //Gör att knappen "Legg til en farge" fungerar igen.
             document.getElementById("addColor").disabled = false;
     
-            // Rensar canvasen.
+            //Rensar canvasen.
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
