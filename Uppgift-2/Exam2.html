@@ -165,6 +165,8 @@
            //Här använder jag .map för att gå igenom alla raderna i arrayen i todos. För varje rad sparas värdet i en parameter kallad todo, och kör en kod som bygger en template literal-sträng.
            //Strängen innehåller en <li>-tag eftersom detta blir ett list-element i våran ul="todolist". För att få todo.text och todo.status brevid varandra använde jag <span>-tags för att separera dessa eftersom de är i samma list-element.
            //För att visa om tasken är done eller inte så har jag gjort ett if-test som en conditional ternary logic som checkar om värdet av nyckel status är Done ska den skriva ut ordet Done, om inte skriver vi ut To do.
+           //Lagt till index för att varje objekt i todo arrayen ska få ett värde.
+           //Lagt till onclick som är en kort typ av eventlistener som gör att varje gång en li ttrycks på, så körs funktionen newStatus.
            todos.map((todo, index) => {
                todosHTML += `
                <li onclick="newStatus(${index})">
@@ -180,8 +182,10 @@
 
         function newStatus(index) {
     
+            //If-test för att se om statusen har värdet todo, isåfall byts det till done om användaren trycker.
             if (todos[index].status === "To do") {
                todos[index].status = "Done";
+               //Grännssnittet uppdateras med en gång användaren trycker på todo.
                updateTodoList(); 
             }
         }
